@@ -2,6 +2,11 @@
 
 class Controller_V1_Auth extends Controller_V1_Abstract {
 
+
+	public function before() {
+		parent::before();
+	}
+
 	public function action_index() {
 		$this->response->body('hello, users!');
 	}
@@ -12,5 +17,18 @@ class Controller_V1_Auth extends Controller_V1_Abstract {
 
 	public function action_logout() {
 		$this->response->body('logout');
+	}
+
+	public function action_signin() {
+		$this->response->body('signin');
+
+	}
+
+	public function action_signup() {
+		$this->response->body('signup');
+	}
+
+	public function after() {
+		parent::after();
 	}
 }
