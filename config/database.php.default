@@ -1,0 +1,18 @@
+<?php defined('SYSPATH') or die('No direct access allowed.');
+
+return array(
+
+	'mongo' => array(
+		'type'       => 'mongo',
+		'connection' => array(
+			'hostname'   => 'localhost',
+			'database'   => 'apirn',
+			'username'   => 'apirn',
+			'password'   => 'apirn',
+			'persistent' => FALSE,
+		),
+		'charset'      => 'utf8',
+		'caching'      => FALSE,
+		'profiling'    => TRUE,
+	),
+);
