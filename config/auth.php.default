@@ -1,0 +1,8 @@
+<?php defined('SYSPATH') or die('No direct access allowed.');
+
+return array(
+	'auth' => array(
+		'algo'		=> 'sha256',
+		'salt'		=> '4r3m12vnsu43fmnsis3nsJlkf2',
+	),
+);

@@ -1,6 +1,6 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
-class Controller_Welcome extends Controller_Html {
+class Controller_Test extends Controller_Html {
 
 	public function before() {
 		parent::before();
@@ -8,7 +8,7 @@ class Controller_Welcome extends Controller_Html {
 
 	public function action_index() {
 
-		$view = View::factory('welcome');
+		$view = View::factory('test/index');
 
 		$cookie = json_decode(Cookie::get('apirn_1'));
 

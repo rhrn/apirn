@@ -94,6 +94,13 @@ Kohana::$log->attach(new Log_File(APPPATH.'logs'));
 Kohana::$config->attach(new Config_File);
 
 /**
+ * Cookie config.
+ */
+$cookie = Kohana::$config->load('cookie');
+Cookie::$salt           = $cookie->salt;
+Cookie::$expiration     = $cookie->expiration;
+
+/**
  * Enable modules. Modules are referenced by a relative or absolute path.
  */
 Kohana::modules(array(
@@ -120,6 +127,12 @@ Route::set('api', '<directory>(/<controller>(/<action>(/<params>)))',
 		'controller' => 'defaults',
 		'action'     => 'index',
 		'directory'  => 'v1'
+	));
+
+Route::set('join', 'join')
+	->defaults(array(
+		'controller' => 'auth',
+		'action'     => 'join',
 	));
 
 Route::set('default', '(<controller>(/<action>(/<id>)))')

@@ -2,7 +2,7 @@
 /**
  * Authentication and Authorization
  */
-class Controller_V1_Auth extends Controller_V1_Abstract {
+class Controller_V1_Auth extends Controller_V1_Api {
 
 
 	public function before() {
@@ -21,22 +21,64 @@ class Controller_V1_Auth extends Controller_V1_Abstract {
 		$this->response->body('logout');
 	}
 
+	public function action_join() {
+	
+		$post = $this->request->post();
+		
+		$users = Model::factory('v1_users');
+
+		$valid = $users->valid_unique_email($post);
+
+		if (!$valid->check()) {
+
+			$valid = $users->valid_auth($post);
+
+			if ($valid->check()) {
+				$this->data['error'] = 0;
+				$this->data['auth'] = $users->auth();
+			}
+
+		} else {
+
+			$valid = $users->valid_add($post);
+
+			if ($valid->check()) {
+				$this->data['error'] = 0;
+				$this->data['auth'] = $users->add($post);
+			}
+		}
+
+		$this->data['errors'] = $valid->errors('join');
+
+		echo $this->response();
+	}
+
 	public function action_signin() {
-		$this->response->body('signin');
+		$this->response->body('sign in');
 	}
 
 	public function action_signup() {
-		$this->response->body('signup');
+		$this->response->body('sign up');
+	}
+
+	public function action_signout() {
+		$this->response->body('sign out');
 	}
 
 	public function action_test() {
 		//d::v ($this->request->generate_etag());
-		d::v ($this->request->method());
-		d::v ($this->request->headers('Authentication'));
-		d::v ($this->request->uri());
-		d::v ($this->request->param('params'));
-		d::cl ($this->response);
-		d::cl ($this->request);
+		//d::v ($this->request->method());
+		//d::v ($this->request->headers('Authentication'));
+		//d::v ($this->request->uri());
+		//d::v ($this->request->param('params'));
+		//d::cl ($this->response);
+		//d::cl ($this->request);
+
+		//$x = MDB::db()->users->find();
+		$x = MDB::find('users');
+		var_dump(iterator_to_array($x));
+
+
 	}
 
 	public function after() {

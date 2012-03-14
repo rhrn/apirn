@@ -3,14 +3,13 @@
 return array(
 
 	'mongo' => array(
-		'type'       => 'mongo',
-		'connection' => array(
-			'hostname'   => 'localhost',
-			'database'   => 'apirn',
-			'username'   => 'apirn',
-			'password'   => 'apirn',
-			'persistent' => FALSE,
-		),
+
+		'database'	=> 'apirn',
+		'hostname'	=> 'localhost',
+
+		'username'	=> 'apirn',
+		'password'	=> 'apirn',
+
 		'charset'      => 'utf8',
 		'caching'      => FALSE,
 		'profiling'    => TRUE,
