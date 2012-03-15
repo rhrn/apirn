@@ -56,6 +56,14 @@ class MDB
 		return self::$gridFS;
 	}
 
+	public static function stringId(array $array) {
+		return $array["_id"]->{'$id'};
+	}
+
+	public static function objectId(array $array) {
+		return array("_id" => $array["_id"]);
+	}
+
 	public static function count(array $query = array(), $limit = 0, $skip = 0) {
 		return self::collection()->count($query, $limit, $skip);
 	}

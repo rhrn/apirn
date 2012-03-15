@@ -1,9 +1,10 @@
 <?php defined('SYSPATH') or die('No direct access allowed.');
 
 return array(
-	'salt'		=> 'hashSaltRepalceThisText',
-	'domain'	=> '.example.com',
+	'salt'		=> 'changeThisString',
 	'expiration'	=> Date::YEAR,
+	'path'		=> '/',
+	'domain'	=> null, //'.example.com',
 	'secure'	=> false,
 	'httponly'	=> false,
 );

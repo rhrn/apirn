@@ -97,8 +97,13 @@ Kohana::$config->attach(new Config_File);
  * Cookie config.
  */
 $cookie = Kohana::$config->load('cookie');
+
 Cookie::$salt           = $cookie->salt;
 Cookie::$expiration     = $cookie->expiration;
+Cookie::$domain		= $cookie->domain;
+Cookie::$path		= $cookie->path;
+Cookie::$secure		= $cookie->secure;
+Cookie::$httponly	= $cookie->httponly;
 
 /**
  * Enable modules. Modules are referenced by a relative or absolute path.

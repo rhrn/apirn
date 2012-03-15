@@ -27,8 +27,10 @@ abstract class Controller_Html extends Controller_Template {
 
 	public function after() {
 
+		if (empty($this->template->content)) {
+			$this->template->content = '';
+		}
 		parent::after();
-
 	}
 
 }

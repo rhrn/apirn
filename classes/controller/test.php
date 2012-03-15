@@ -10,11 +10,14 @@ class Controller_Test extends Controller_Html {
 
 		$view = View::factory('test/index');
 
-		$cookie = json_decode(Cookie::get('apirn_1'));
+		$apirn = json_decode(Cookie::get('apirn_1'));
 
-		$view->email = $cookie->email;
+		$view->name = $apirn->name;
 
-/*
+		$this->template->content = (string) $view;
+	}
+
+	public function action_api() {
 
 		$data = array(
 			'email' => 'nester@bqk.ru',
@@ -26,9 +29,7 @@ class Controller_Test extends Controller_Html {
 			->post();
 
 		d::v($data);
-*/
 
-		$this->template->content = (string) $view;
 	}
 
 

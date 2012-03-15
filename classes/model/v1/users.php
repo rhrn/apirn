@@ -72,7 +72,12 @@ class Model_V1_Users extends Model_V1_Api {
 
 	public function auth() {
 
-		return MDB::findOne(self::$user_id, array('_id' => 0, 'password' => 0));
+		$user = MDB::findOne(self::$user_id, array('password' => 0));
+
+		return array(
+			'name'	=> $user['email'],
+			'token' => Model::factory('v1_tokens')->get($user)
+		);
 	}
 
 	public function add($data) {
@@ -80,10 +85,8 @@ class Model_V1_Users extends Model_V1_Api {
 		$data['password'] = self::password($data['password']);
 
 		$insert = MDB::insert($data);
-		
-		if (!empty($data['_id'])) {
-			self::$user_id = array("_id" => $data["_id"]);
-		}
+
+		self::$user_id = MDB::objectId($data);
 
 		return $this->auth();
 	}

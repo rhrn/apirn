@@ -9,6 +9,21 @@ class Controller_V1_Test extends Controller_V1_Api {
 	}
 
 	public function action_index() {
+
+	}
+
+	public function action_token() {
+
+		$users = Model::factory('v1_users');
+
+		if ($users->is_auth_data('nester@bk.ru', 'rwerwwerwer')) {
+
+			$x = $users->auth();
+
+			d::v($x);
+		}
+		
+
 	}
 
 	public function action_model() {

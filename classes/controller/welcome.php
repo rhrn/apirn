@@ -10,23 +10,15 @@ class Controller_Welcome extends Controller_Html {
 
 		$view = View::factory('welcome');
 
-		$cookie = json_decode(Cookie::get('apirn_1'));
+		$view->name = '';
 
-		$view->email = $cookie->email;
+		$apirn = json_decode(Cookie::get('apirn_1'));
 
-/*
-
-		$data = array(
-			'email' => 'nester@bqk.ru',
-			'password' => 'qweqwe'
-		);
-
-		$data = $this->api->action('v1/auth/join')
-			->params($data)
-			->post();
-
-		d::v($data);
-*/
+		if ($apirn) {
+			$view->name = $apirn->name;
+		} else {
+			$this->request->redirect('/join');
+		}
 
 		$this->template->content = (string) $view;
 	}
