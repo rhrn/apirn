@@ -2,7 +2,7 @@
 
 class Model_V1_Users extends Model_V1_Api {
 
-	private $collection = 'users';
+	public $collection = 'users';
 
 	public static $user_id;
 
@@ -29,7 +29,6 @@ class Model_V1_Users extends Model_V1_Api {
 
 	protected function __construct() {
 		parent::__construct();
-		MDB::collection($this->collection);
 	}
 
 	public function valid_unique_email($data) {
@@ -60,19 +59,25 @@ class Model_V1_Users extends Model_V1_Api {
 		$data['email']		= $email;
 		$data['password']	= self::password($password);
 
-		self::$user_id = MDB::findOne($data, array('_id' => 1));
+		self::$user_id = MDB::collection('users')->findOne($data, array('_id' => 1));
 
 		return (bool) self::$user_id;
 	}
 
 	public static function is_unique_email($email) {
 
-		return !MDB::findOne(array('email' => $email), array('email' => 1));
+		return !MDB::collection('users')->findOne(array('email' => $email), array('email' => 1));
+	}
+
+	public function get() {
+		return $this->collection->findOne(self::$user_id, array('password' => 0));
 	}
 
 	public function auth() {
 
-		$user = MDB::findOne(self::$user_id, array('password' => 0));
+		$user = $this->get();
+
+		$this->collection->update(self::$user_id, array('$inc' => array('logins' => 1)));
 
 		return array(
 			'name'	=> $user['email'],
@@ -84,11 +89,21 @@ class Model_V1_Users extends Model_V1_Api {
 
 		$data['password'] = self::password($data['password']);
 
-		$insert = MDB::insert($data);
+		$insert = $this->collection->insert($data);
 
 		self::$user_id = MDB::objectId($data);
 
 		return $this->auth();
+	}
+
+	public function token($token) {
+
+		$id = Model::factory('v1_tokens')->user($token);
+
+		if ($id) {
+			self::$user_id = MDB::objectId($id);
+			return $this->get();
+		}
 	}
 
 }

@@ -12,17 +12,39 @@ class Controller_V1_Test extends Controller_V1_Api {
 
 	}
 
+	public function action_find() {
+
+		MDB::$config = Kohana::$config->load('database')->mongo;
+
+		$id = '4f645e4f6e3d1c284e000001';
+
+		$id = MDB::objectId($id);
+
+		MDB::collection('users');
+		
+		$find = MDB::find($id);
+
+		d::v (iterator_to_array($find));
+
+	}
+
 	public function action_token() {
 
 		$users = Model::factory('v1_users');
 
-		if ($users->is_auth_data('nester@bk.ru', 'rwerwwerwer')) {
-
-			$x = $users->auth();
-
-			d::v($x);
+		if ($users->is_auth_data('maylog@gmail.com', 'qwertyhn')) {
+			$x = $users->auth(); d::v($x);
 		}
-		
+
+		$find = MDB::collection('tokens')->find();
+
+		foreach ($find as $f) {
+			d::v ($f);
+		}
+
+		$find = MDB::collection('tokens')->findOne();
+
+			d::v ($find);
 
 	}
 

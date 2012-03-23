@@ -60,8 +60,12 @@ class MDB
 		return $array["_id"]->{'$id'};
 	}
 
-	public static function objectId(array $array) {
-		return array("_id" => $array["_id"]);
+	public static function objectId($id) {
+		if (is_array($id)) {
+			return array("_id" => $id["_id"]);
+		} elseif (is_string($id)) {
+			return array("_id" => new MongoId($id));
+		}
 	}
 
 	public static function count(array $query = array(), $limit = 0, $skip = 0) {

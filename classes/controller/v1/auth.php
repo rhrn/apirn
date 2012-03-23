@@ -65,22 +65,6 @@ class Controller_V1_Auth extends Controller_V1_Api {
 		$this->response->body('sign out');
 	}
 
-	public function action_test() {
-		//d::v ($this->request->generate_etag());
-		//d::v ($this->request->method());
-		//d::v ($this->request->headers('Authentication'));
-		//d::v ($this->request->uri());
-		//d::v ($this->request->param('params'));
-		//d::cl ($this->response);
-		//d::cl ($this->request);
-
-		//$x = MDB::db()->users->find();
-		$x = MDB::find('users');
-		var_dump(iterator_to_array($x));
-
-
-	}
-
 	public function after() {
 		parent::after();
 	}

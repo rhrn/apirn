@@ -11,11 +11,14 @@ class Controller_Welcome extends Controller_Html {
 		$view = View::factory('welcome');
 
 		$view->name = '';
+		$view->token = '';
 
 		$apirn = json_decode(Cookie::get('apirn_1'));
 
 		if ($apirn) {
-			$view->name = $apirn->name;
+			$view->name	= $apirn->name;
+			$view->token	= $apirn->token;
+			$view->action	= '/tag/add';
 		} else {
 			$this->request->redirect('/join');
 		}
