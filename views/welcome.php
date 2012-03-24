@@ -4,6 +4,8 @@
 
 <style>
 	ul {list-style:none}
+	#tags {border:1px solid #ddd; width:190px; height:15px; padding:3px; margin:4px 0px}
+	#tags:focus {border:1px solid #ddd;}
 </style>
 
 <script>
@@ -34,6 +36,8 @@ $(function() {
 		var key = e.keyCode || e.which || e.charCode || 0;
 
 		if (key === enter) {
+			$(this).attr("disabled", "disabled");
+			$('.errors_msg').empty();
 			var tags = $(this).val();
 			$.ajax({
 				url: '/v1' + $('#form_tags').attr('action'),
@@ -44,7 +48,13 @@ $(function() {
 					if (!x.error) {
 						$('#tags').val('');
 						attachTags(x.list);
+					} else {
+						console.log(x.errors);
+						$.each(x.errors, function(i, msg) {
+							$('#' + i + '_msg').text(msg);
+						});
 					}
+					$('#tags').removeAttr('disabled');
 				}
 			});
 			e.preventDefault();
@@ -63,6 +73,8 @@ $(function() {
 
 <li>
 	<?php echo form::input('tags', '', array('id' => 'tags', 'placeholder' => ' enter ')) ?>
+
+	<span class="errors_msg" id="tags_msg"></span>
 </li>
 
 <li id="tags_anchor"></li>

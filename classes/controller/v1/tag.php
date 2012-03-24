@@ -13,14 +13,19 @@ class Controller_V1_Tag extends Controller_V1_Api {
 
 		$data = $this->request->post();
 
-		if (!empty($data)  && $this->user) {
-			
-			$tags = Model::factory('v1_tags');
+		$tags = Model::factory('v1_tags');
+
+		$valid = $tags->valid_tags($data);
+
+		if ($valid->check()) {
 
 			if ($tag = $tags->add($this->user, $data['tags'])) {
 				$this->data['error']	= 0;
 				$this->data['list']	= $tag;
 			}
+			
+		} else {
+			$this->data['errors'] = $valid->errors('tags');
 		}
 
 		echo $this->response();

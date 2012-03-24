@@ -12,7 +12,7 @@ $(function() {
 			type: 'POST',
 			data: $(this).serialize(),
 			success: function (x) {
-				$('.error_msg').text('');
+				$('.errors_msg').empty();
 				if (!!x.error) {
 					$.each(x.errors, function(i, msg) {
 						$('#' + i + '_msg').text(msg);
@@ -41,9 +41,9 @@ $(function() {
 <?php echo form::open($action, array('id' => 'from_join')) ?>
 
 <?php echo form::input('email', '', array('placeholder' => 'email')) ?>
-<div class="error_msg" id="email_msg"></div>
+<div class="errors_msg" id="email_msg"></div>
 <?php echo form::password('password', '', array('placeholder' => 'password')) ?>
-<div class="error_msg" id="password_msg"></div>
+<div class="errors_msg" id="password_msg"></div>
 <?php echo form::submit(null , $submit) ?>
 
 <?php echo form::close() ?>

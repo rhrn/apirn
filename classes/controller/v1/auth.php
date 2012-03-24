@@ -23,15 +23,15 @@ class Controller_V1_Auth extends Controller_V1_Api {
 
 	public function action_join() {
 	
-		$post = $this->request->post();
+		$data = $this->request->post();
 		
 		$users = Model::factory('v1_users');
 
-		$valid = $users->valid_unique_email($post);
+		$valid = $users->valid_unique_email($data);
 
 		if (!$valid->check()) {
 
-			$valid = $users->valid_auth($post);
+			$valid = $users->valid_auth($data);
 
 			if ($valid->check()) {
 				$this->data['error'] = 0;
@@ -40,11 +40,11 @@ class Controller_V1_Auth extends Controller_V1_Api {
 
 		} else {
 
-			$valid = $users->valid_add($post);
+			$valid = $users->valid_add($data);
 
 			if ($valid->check()) {
 				$this->data['error'] = 0;
-				$this->data['auth'] = $users->add($post);
+				$this->data['auth'] = $users->add($data);
 			}
 		}
 

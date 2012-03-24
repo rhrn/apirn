@@ -7,7 +7,11 @@ class Model_V1_Tags extends Model_V1_Api {
 	public static $user_id;
 
 	private $rules = array(
-
+		'tags' => array(
+                        array('not_empty'),
+                        array('min_length', array(':value', 1)),
+                        array('max_length', array(':value', 4444))
+                )
 	);
 
 	protected function __construct() {
@@ -16,7 +20,7 @@ class Model_V1_Tags extends Model_V1_Api {
 
 	public function valid_tags($data) {
 		return Validation::factory($data)
-			->rule('tags', array($this, 'tags'), array(':value'));
+			->rules('tags', $this->rules['tags']);
 	}
 
 	public function add($user, $tag) {
@@ -47,9 +51,15 @@ class Model_V1_Tags extends Model_V1_Api {
 
 		$find['user_id'] = MDB::stringId($user);
 
-		$find = $this->collection->find($find, array('user_id' => 0));
+		$find = $this->collection->find($find, array('user_id' => 0))
+				->sort(array('$natural' => -1))
+				->limit(5);
 
-		return iterator_to_array($find);
+		$find = iterator_to_array($find);
+
+		sort($find);
+
+		return $find;
 	}
 
 }
