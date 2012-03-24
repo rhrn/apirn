@@ -2,12 +2,6 @@
 
 <div id="user-data" data-name="<?php echo $name ?>" data-token="<?php echo $token ?>"></div>
 
-<style>
-	ul {list-style:none}
-	#tags {border:1px solid #ddd; width:190px; height:15px; padding:3px; margin:4px 0px}
-	#tags:focus {border:1px solid #ddd;}
-</style>
-
 <script>
 var enter = 13;
 $(function() {
@@ -16,7 +10,7 @@ $(function() {
 
 	function attachTags(list) {
 		$.each(list, function(i, tag) {
-			$('#tags_anchor').after('<li data-id="' + i + '">' + tag.name + '</li>');
+			$('#tags_anchor').after('<div data-id="' + i + '">' + tag.name + '</div>');
 		});
 	}
 
@@ -37,7 +31,7 @@ $(function() {
 
 		if (key === enter) {
 			$(this).attr("disabled", "disabled");
-			$('.errors_msg').empty();
+			$('.help-inline').empty();
 			var tags = $(this).val();
 			$.ajax({
 				url: '/v1' + $('#form_tags').attr('action'),
@@ -63,24 +57,28 @@ $(function() {
 });
 </script>
 
-<?php echo form::open($action, array('id' => 'form_tags')) ?>
+<div class="row-fluid show-grid">
+	<div class="span12">
+		Hello, <?php echo $name ?>!
+	</div>
+</div>
 
-<ul>
+<div class="row-fluid show-grid">
 
-<li>
-	Hello, <?php echo $name ?>!
-</li>
+	<div class="span12">
 
-<li>
-	<?php echo form::input('tags', '', array('id' => 'tags', 'placeholder' => ' enter ')) ?>
+		<?php echo form::open($action, array('id' => 'form_tags', 'autocomplete' => 'off')) ?>
 
-	<span class="errors_msg" id="tags_msg"></span>
-</li>
+		<?php echo form::input('tags', '', array('id' => 'tags', 'placeholder' => ' enter ')) ?>
 
-<li id="tags_anchor"></li>
+		<span class="help-inline" id="tags_msg"></span>
 
-</ul>
+		<span id="tags_anchor"></span>
 
-<?php echo form::close() ?>
+		<?php echo form::close() ?>
+
+	</div>
+
+</div>
 
 <?php endif ?>

@@ -1,9 +1,6 @@
 <script>
 $(function() {
 
-	$('input[name=email]').css('border', '1px solid blue');
-	$('input[name=password]').css('border', '1px solid gray');
-
 	$('#from_join').on('submit', function(e) {
 		
 		$.ajax({
@@ -12,7 +9,7 @@ $(function() {
 			type: 'POST',
 			data: $(this).serialize(),
 			success: function (x) {
-				$('.errors_msg').empty();
+				$('.help-inline').empty();
 				if (!!x.error) {
 					$.each(x.errors, function(i, msg) {
 						$('#' + i + '_msg').text(msg);
@@ -28,7 +25,6 @@ $(function() {
 						}
 					});
 				}
-				//console.log(x);
 			}
 		});
 
@@ -38,12 +34,29 @@ $(function() {
 });
 </script>
 
-<?php echo form::open($action, array('id' => 'from_join')) ?>
+<div class="row-fluid show-grid">
+	<div class="span12"></div>
+</div>
 
-<?php echo form::input('email', '', array('placeholder' => 'email')) ?>
-<div class="errors_msg" id="email_msg"></div>
-<?php echo form::password('password', '', array('placeholder' => 'password')) ?>
-<div class="errors_msg" id="password_msg"></div>
-<?php echo form::submit(null , $submit) ?>
+<div class="row-fluid show-grid">
 
-<?php echo form::close() ?>
+	<div class="span12">
+		<?php echo form::open($action, array('id' => 'from_join')) ?>
+
+		<div>
+			<?php echo form::input('email', '', array('placeholder' => 'email')) ?>
+			<span class="help-inline" id="email_msg"></span>
+		</div>
+
+		<div>
+			<?php echo form::password('password', '', array('placeholder' => 'password')) ?>
+			<span class="help-inline" id="password_msg"></span>
+		</div>
+
+		<?php echo form::submit(null , $submit, array('class' => 'btn')) ?>
+
+		<?php echo form::close() ?>
+	</div>
+
+</div>
+
