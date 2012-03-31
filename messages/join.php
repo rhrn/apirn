@@ -14,5 +14,5 @@ return array(
 	'password.min_length'	=> 'Less :param2 chars not secure. Need more',
 	'password.max_length'	=> 'Sorry, max length value is :param2',
 
-	'password.is_auth_data' => 'Pair of email + password not matched in application',
+	'password.is_auth_data' => 'Email + password not matched',
 );

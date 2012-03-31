@@ -4,7 +4,10 @@ class Model_V1_Tags extends Model_V1_Api {
 
 	public $collection = 'tags';
 
+	public $limit = 100;
+
 	public static $user_id;
+
 
 	private $rules = array(
 		'tags' => array(
@@ -52,12 +55,12 @@ class Model_V1_Tags extends Model_V1_Api {
 		$find['user_id'] = MDB::stringId($user);
 
 		$find = $this->collection->find($find, array('user_id' => 0))
-				->sort(array('$natural' => -1))
-				->limit(5);
+				->sort(array('created' => -1))
+				->limit($this->limit);
 
 		$find = iterator_to_array($find);
 
-		sort($find);
+		//sort($find);
 
 		return $find;
 	}
