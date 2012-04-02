@@ -4,13 +4,12 @@ class Model_V1_Tags extends Model_V1_Api {
 
 	public $collection = 'tags';
 
-	public $limit = 100;
+	public $limit = 0;
 
 	public static $user_id;
 
-
 	private $rules = array(
-		'tags' => array(
+		'tag' => array(
                         array('not_empty'),
                         array('min_length', array(':value', 1)),
                         array('max_length', array(':value', 4444))
@@ -23,16 +22,16 @@ class Model_V1_Tags extends Model_V1_Api {
 
 	public function valid_tags($data) {
 		return Validation::factory($data)
-			->rules('tags', $this->rules['tags']);
+			->rules('tag', $this->rules['tag']);
 	}
 
 	public function add($user, $tag) {
 
-		$data = array(
-			'user_id'	=> MDB::stringId($user),
-			'name'		=> $tag,
-			'created'	=> date('Y-m-d H:i:s')
-		);
+		$data = array();
+
+		$data['user_id']	= MDB::stringId($user);
+		$data['name']		= $tag;
+		$data['created']	= date('Y-m-d H:i:s');
 
 		$insert = $this->collection->insert($data);
 
@@ -45,7 +44,26 @@ class Model_V1_Tags extends Model_V1_Api {
 
 			return array($id => $data);
 		}
+
 		return false;
+	}
+
+	public function update($user, $id, $tag) {
+
+		$data = MDB::objectId($id);
+
+		$data['user_id'] = MDB::stringId($user);
+
+		$set = array('$set' => array(
+			'name'		=> $tag,
+			'updated'	=> date('Y-m-d H:i:s'),
+		));
+
+		$update = $this->collection->update($data, $set, array('upsert' => true));
+
+		if ($update) {
+			return array($id => $set['$set']);
+		}
 	}
 
 	public function get($user) {
@@ -55,14 +73,25 @@ class Model_V1_Tags extends Model_V1_Api {
 		$find['user_id'] = MDB::stringId($user);
 
 		$find = $this->collection->find($find, array('user_id' => 0))
-				->sort(array('created' => -1))
-				->limit($this->limit);
+				->limit($this->limit)
+				->sort(array('created' => -1));
 
 		$find = iterator_to_array($find);
 
-		//sort($find);
-
 		return $find;
+	}
+
+	public function remove($user, $id) {
+
+		$remove			= MDB::objectId($id);
+		$remove['user_id']	= MDB::stringId($user);
+
+		$x = $this->collection->remove($remove, array('safe' => true));
+
+		if ($x['n']) {
+			return $id;
+		}
+
 	}
 
 }

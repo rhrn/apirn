@@ -19,7 +19,16 @@ class Controller_V1_Tag extends Controller_V1_Api {
 
 		if ($valid->check()) {
 
-			if ($tag = $tags->add($this->user, $data['tags'])) {
+
+			if (empty($data['id'])) {
+				$tag = $tags->add($this->user, $data['tag']);
+				$this->data['insert'] = 1;
+			} else {
+				$tag = $tags->update($this->user, $data['id'], $data['tag']);
+				$this->data['insert'] = 0;
+			}
+
+			if ($tag) {
 				$this->data['error']	= 0;
 				$this->data['list']	= $tag;
 			}
@@ -42,6 +51,23 @@ class Controller_V1_Tag extends Controller_V1_Api {
 			if ($list = $tags->get($this->user)) {
 				$this->data['error']	= 0;
 				$this->data['list']	= $list;
+			}
+		}
+
+		echo $this->response();
+	}
+
+	public function action_remove() {
+
+		$data = $this->request->query();
+
+		if (!empty($data)  && $this->user) {
+
+			$tags = Model::factory('v1_tags');
+
+			if ($id = $tags->remove($this->user, $data['id'])) {
+				$this->data['error']	= 0;
+				$this->data['id']	= $id;
 			}
 		}
 
