@@ -40,16 +40,17 @@ $(function() {
 	var $user = $('#user-data');
 
 	var attachTags = function attachTags(list, id, type) {
-		/* dirty hack, need optimization */
+		var html = '';
+		var controls = '<span class="controls"><i class="icon-edit"></i><i class="icon-trash"></i></span>';
 		$.each(list, function(i, tag) {
-			var controls = '<span class="controls"><i class="icon-edit"></i><i class="icon-trash"></i></span>';
-			var html = '<div id="tag' + i + '" class="tags-element btn-group" data-id="' + i + '"><span class="tag-text">' + tag.name + '</span>' + controls + '</div>';
-			if (type === 'before') {
-				$(id).before(html);
-			} else if (type === 'after') {
-				$(id).after(html);
-			}
+			html += '<div id="tag' + i + '" class="tags-element btn-group" data-id="' + i + '"><span class="tag-text">' + tag.name + '</span>' + controls + '</div>';
 		});
+
+		if (type === 'before') {
+			$(id).before(html);
+		} else if (type === 'after') {
+			$(id).after(html);
+		}
 	}
 
 	var updateTags = function updateTags(list) {
@@ -59,10 +60,13 @@ $(function() {
 		});
 	}
 
+	$.ajaxSetup({
+		dataType: 'json'
+	});
+
 	$.ajax({
 		url: '/v1/tag/list',
-		data: {token: $user.data('token')},
-		dataType: 'json'
+		data: {token: $user.data('token')}
 	}).done(function(x) {
 		if (!x.error) {
 			attachTags(x.list, '#tags-anchor', 'before');
@@ -83,8 +87,7 @@ $(function() {
 		var id = $(this).parents('.tags-element').data('id');
 		$.ajax({
 			url: '/v1/tag/remove',
-			data: {id: id, token: $user.data('token')},
-			dataType: 'json'
+			data: {id: id, token: $user.data('token')}
 		}).done(function(x) {
 			$('#tag' + x.id).hide('slow');
 		});
@@ -105,8 +108,7 @@ $(function() {
 				url: $('#form-tags').attr('api-action'),
 				type: 'POST',
 				data: {tag: tag, token: $user.data('token'), id: $(this).data('id')},
-				tagElement: this,
-				dataType: 'json'
+				tagElement: this
 			}).done(function(x) {
 
 				$el = $(this.tagElement);
