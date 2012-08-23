@@ -22,12 +22,6 @@
 	padding: 3px;
 	width:100%;
 }
-.controls {
-	position: absolute;
-	margin: 0px 0px 0px 1px;
-	bottom: 0px;
-	right: 0px;
-}
 </style>
 
 <div id="user-data" data-name="<?php echo $name ?>" data-token="<?php echo $token ?>"></div>
@@ -41,9 +35,11 @@ $(function() {
 
 	var attachTags = function attachTags(list, id, type) {
 		var html = '';
-		var controls = '<span class="controls"><i class="icon-edit"></i><i class="icon-trash"></i></span>';
+		var controls = '<span class="controls pull-right"><i class="icon-edit"></i><i class="icon-trash"></i></span>';
 		$.each(list, function(i, tag) {
-			html += '<div id="tag' + i + '" class="tags-element btn-group" data-id="' + i + '"><span class="tag-text">' + tag.name + '</span>' + controls + '</div>';
+			html += '<div>';
+			html += '<div id="tag' + i + '" class="tags-element" data-id="' + i + '"><span class="tag-text">' + tag.name + '</span>' + controls + '</div>';
+			html += '</div>';
 		});
 
 		if (type === 'before') {
