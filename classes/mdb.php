@@ -19,11 +19,10 @@ class MDB
 		return self::$config;
 	}
 
-	public static function mongo($hostname = 'localhost') {
+	public static function mongo(array $config) {
 		if (self::$mongo === null) {
-			
 
-			self::$mongo = new Mongo('mongodb://'. $hostname);
+			self::$mongo = new Mongo('mongodb://' . $config['username'] . ':' . $config['password'] . '@'. $config['hostname'] . '/' . $config['database']);
 
 			// catch (MongoConnectionException $e) 
 
@@ -33,9 +32,12 @@ class MDB
 
 	public static function db() {
 		if (self::$db === null) {
+
 			$config = self::config();
-			self::$db = self::mongo($config['hostname'])->selectDB($config['database']);
-			self::$db->authenticate($config['username'], $config['password']);
+
+			self::$db = self::mongo($config);
+
+			self::$db = self::$db->selectDB($config['database']);
 
 			// catch (MongoCursorException $e)
 		}
